@@ -19,11 +19,14 @@ CLANGLIBS = \
 	-lclangAnalysis -lclangARCMigrate -lclangRewriteCore -lclangRewriteFrontend \
 	-lclangEdit -lclangAST -lclangLex -lclangBasic
 
-all: Generator
+all: Generator MainGenerator
 
 Generator: Generator.cpp
 	$(CXX) Generator.cpp $(CFLAGS) -o Generator \
 	$(CLANG_BUILD_FLAGS) $(CLANGLIBS) `$(LLVM_CONFIG_COMMAND)`
 
+MainGenerator: MainGenerator.cpp
+	$(CXX) MainGenerator.cpp $(CFLAGS) -o MainGenerator
+
 clean:
-	rm -rf *.o *.ll Generator
+	rm -rf *.o *.ll Generator MainGenerator
