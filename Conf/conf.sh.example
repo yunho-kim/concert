@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Set the concolic unit testing tool directory
+export CONCERTDIR=${HOME}/work/concert
+
+# Set the absolute path to CREST
+# If you set $CRESTDIR correctly, the following command can run 'run_crest'
+# $ $CRESTDIR/bin/run_crest
+export CRESTDIR=${HOME}/work/crest
+
+# Set the absolute path to the source code
+# All source code files should be in the same directory
+export SRCDIR=$CONCERTDIR/Example/src
+
+# Set the list of source code files
+# In the source_list.txt file, each line should have one source code file name
+# without its directory path. 
+# You can set any filename for $SRCLIST
+export SRCLIST=$CONCERTDIR/Example/source_list.txt
+
+# Set the list of function names
+# In the function_list.txt file, each line should have one function name
+# TestGenerator will generate test drivers for the functions in this list 
+# You can set any filename for $FUNCLIST
+export FUNCLIST=$CONCERTDIR/Example/function_list.txt
