@@ -13,7 +13,7 @@ http://swtv.kaist.ac.kr/~yhkim/llvm-3.3.src.tar.gz
 $ tar -zxf llvm-3.3.src.tar.gz
 $ mkdir llvm-3.3.build
 $ cd llvm-3.3.build
-$ ../llvm-3.3.src/configure --prefix=${HOME}/llvm --enable-optimized=no
+$ ../llvm-3.3.src/configure --prefix=${HOME}/llvm --with-optimize-option="-O0"
 $ make -jN && make install # N은 사용 가능한 최대 core 수
 $ ${HOME}/llvm/bin/clang # clang 이 정상적으로 실행 가능한지 확인
 
