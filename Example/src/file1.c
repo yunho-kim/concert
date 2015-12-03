@@ -8,4 +8,3 @@ int g(int x, int y){
   else ret = x - y;
   return ret;
 }
-

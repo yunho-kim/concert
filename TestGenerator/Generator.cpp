@@ -265,6 +265,7 @@ public:
                     int len = 1;
                     if (ConstantArrayTypePtr != NULL){
                         len = ConstantArrayTypePtr->getSize().getZExtValue();
+                        if (len > 10) len = 10;
                     }
                     else if (PointeeTypePtr->isIntegralOrEnumerationType()){
                         len = 10;
@@ -305,6 +306,7 @@ public:
                         const ConstantArrayType *ConstantArrayTypePtr = dyn_cast<ConstantArrayType>(TypePtr);
                         if (ConstantArrayTypePtr != NULL){
                             len = ConstantArrayTypePtr->getSize().getZExtValue();
+                            if (len > 10) len = 10;
                         }
                         else if (PointeeTypePtr->isIntegralOrEnumerationType()){
                             len = 10;
@@ -787,9 +789,9 @@ int main(int argc, char *argv[])
     ParseAST(TheCompInst.getPreprocessor(), TheConsumer,
              TheCompInst.getASTContext());
     //TheConsumer->GenerateTestDriver();
-    TheConsumer->GenerateTestDriver(SourceMgr.getLocForEndOfFile(SourceMgr.getMainFileID()).getLocWithOffset(-1));
+    TheConsumer->GenerateTestDriver(SourceMgr.getLocForEndOfFile(SourceMgr.getMainFileID()).getLocWithOffset(0));
 
-    TheConsumer->GenerateInitializer(SourceMgr.getLocForEndOfFile(SourceMgr.getMainFileID()).getLocWithOffset(-1), argv[1]);
+    TheConsumer->GenerateInitializer(SourceMgr.getLocForEndOfFile(SourceMgr.getMainFileID()).getLocWithOffset(0), argv[1]);
     // At this point the rewriter's buffer should be full with the rewritten
     // file contents.
     const RewriteBuffer *RewriteBuf;
