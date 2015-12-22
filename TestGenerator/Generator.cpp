@@ -58,6 +58,20 @@ public:
         : TheRewriter(R), TargetFuncName(S), FunctionDeclMap(), 
         SymbolicStubMap(), CurrentFunctionDeclPtr(NULL), HasTargetFunction(false)
     {}
+    bool VisitDecl(Decl *d){
+        if (isa<VarDecl>(d)){
+            VarDecl *VarDeclPtr = dyn_cast<VarDecl>(d);
+            if (VarDeclPtr->hasExternalStorage()){
+                SourceLocation b(d->getLocStart()), e(d->getLocEnd());
+                string sourceText(TheRewriter.getSourceMgr().getCharacterData(b), 
+                                   TheRewriter.getSourceMgr().getCharacterData(e) - 
+                                   TheRewriter.getSourceMgr().getCharacterData(b)); 
+                sourceText.replace(sourceText.find("extern"), 6, "");
+                TheRewriter.ReplaceText(SourceRange(b, e), sourceText.c_str());
+            }
+        }
+        return true;
+    }
     bool VisitStmt(Stmt *s) {
         // Only care about DeclRefExpr statement that refers to
         // a declared variable, function, enum, etc
