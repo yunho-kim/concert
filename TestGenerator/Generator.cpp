@@ -61,12 +61,21 @@ public:
     bool VisitDecl(Decl *d){
         if (isa<VarDecl>(d)){
             VarDecl *VarDeclPtr = dyn_cast<VarDecl>(d);
-            if (VarDeclPtr->hasExternalStorage()){
-                SourceLocation b(d->getLocStart()), e(d->getLocEnd());
+            string filename = TheRewriter.getSourceMgr().getPresumedLoc(
+                              TheRewriter.getSourceMgr().getFileLoc(d->getLocStart())).getFilename();
+            string prefix("/usr/include");
+            llvm::errs() << filename << "\n";
+            llvm::errs() << !filename.compare(0, prefix.size(), prefix) << "\n"; 
+            if (filename.compare(0, prefix.size(), prefix) && 
+                VarDeclPtr->hasExternalStorage() && !VarDeclPtr->hasDefinition()){
+                SourceLocation b(d->getLocStart()), _e(d->getLocEnd());
+                SourceLocation e(Lexer::getLocForEndOfToken(_e, 0, TheRewriter.getSourceMgr(),
+                                                            TheRewriter.getLangOpts()));
                 string sourceText(TheRewriter.getSourceMgr().getCharacterData(b), 
                                    TheRewriter.getSourceMgr().getCharacterData(e) - 
                                    TheRewriter.getSourceMgr().getCharacterData(b)); 
                 sourceText.replace(sourceText.find("extern"), 6, "");
+                sourceText.append(";");
                 TheRewriter.ReplaceText(SourceRange(b, e), sourceText.c_str());
             }
         }
